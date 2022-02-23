@@ -7,18 +7,21 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Room implements Serializable {
+public class RoomType implements Serializable {
+
+    @NotNull
+    private Integer typeId;
 
     @NotBlank
-    private String roomId;
+    private String name;
 
-    @Valid
-    private RoomType roomType;
-
+    @NotNull
+    private String price;
 }

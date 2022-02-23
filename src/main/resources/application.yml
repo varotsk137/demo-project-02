@@ -1,2 +1,21 @@
 server:
   port: 8088
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_JAAA}
+    password: ${PASSWORD_JAA}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        transport:
+          protocol: smtp
+        debug: true
+    template:
+      path: test
+
