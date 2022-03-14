@@ -9,8 +9,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -21,6 +25,9 @@ public class RoomService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
     @SneakyThrows
     public Room sendSimpleMail(String to, String subject, Room room){
@@ -47,6 +54,27 @@ public class RoomService {
         helper.setText(htmlBody, true);
         mailSender.send(message);
         log.info("Send Email to message");
+
+    }
+
+    @SneakyThrows
+    public void sendThymeleafThemedMail(String to, String subject, Room room){
+
+        Map<String, Object> templateModel = new HashMap<>();
+
+        templateModel.put("roomId", room.getRoomId());
+        templateModel.put("typeId", room.getRoomType().getTypeId());
+        templateModel.put("name", room.getRoomType().getName());
+        templateModel.put("price", room.getRoomType().getPrice());
+
+        templateModel.forEach((s, o) -> log.info("S: {}, O: {}",s, o));
+
+        Context thymeleafContext = new Context();
+        thymeleafContext.setVariables(templateModel);
+
+        String htmlBody = templateEngine.process("template-thymeleaf.html", thymeleafContext);
+
+        sendThemedMail(to, subject, htmlBody);
 
     }
 

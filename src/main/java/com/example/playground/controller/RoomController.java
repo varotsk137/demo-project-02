@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/room")
 public class RoomController {
 
-    private static final String EMAIL = "testmail@mail.comocmcomcom";
+    private static final String EMAIL = "xxxxxxx@gmail.com";
     private static final String SUBJECT = "Test send email to this mail naa";
 
     @Autowired
@@ -21,5 +21,10 @@ public class RoomController {
     @PostMapping(value = "")
     public Room testSendEmail(@Validated @RequestBody Room room){
         return roomService.sendSimpleMail(EMAIL, SUBJECT, room);
+    }
+
+    @PostMapping(value = "/theme")
+    public void testThemeEmail(@Validated @RequestBody Room room){
+        roomService.sendThymeleafThemedMail(EMAIL, SUBJECT, room);
     }
 }
